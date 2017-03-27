@@ -49,9 +49,9 @@ ADD .amberrc /root
 WORKDIR /root
 RUN conda install -v -y -c ambermd ambertools=16.21.1
 RUN rm /root/.amberrc -f
+WORKDIR /
 
 ## spacemacs
-WORKDIR /
 RUN apt-get install -y emacs25
 USER $user
 RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
