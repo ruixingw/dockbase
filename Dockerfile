@@ -13,6 +13,9 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EAAFC9CD
 ## UPDATE
 RUN apt-get update --fix-missing 
 
+## Essential
+RUN apt-get install -y build-essential gfortran vim git wget
+
 # Add user
 RUN apt-get install -y sudo
 RUN useradd -m $user
@@ -20,11 +23,8 @@ RUN echo "$user:$pswd" | chpasswd
 RUN adduser $user sudo
 
 # Install apps
-## Build-essential
-RUN apt-get install -y build-essential gfortran vim 
-
 ## Oh-my-zsh and powerlevel9K theme 
-RUN apt-get install -y zsh git-core wget autojump
+RUN apt-get install -y zsh autojump
 USER $user
 RUN git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.zshrc" -O ~/.zshrc
@@ -34,7 +34,7 @@ USER root
 RUN chsh $user -s /bin/zsh
 
 ## Miniconda 3
-RUN apt-get install -y wget bzip2 ca-certificates \
+RUN apt-get install -y bzip2 ca-certificates \
     libglib2.0-0 libxext6 libsm6 libxrender1 \
     git mercurial subversion
 RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/zsh/zprofile && \
@@ -52,7 +52,7 @@ RUN rm /root/.amberrc -f
 WORKDIR /
 
 ## spacemacs
-RUN apt-get install -y emacs25
+RUN apt-get install -y emacs25 dbus-x11
 USER $user
 RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
 RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.spacemacs" -O ~/.spacemacs

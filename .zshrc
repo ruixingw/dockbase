@@ -6,8 +6,8 @@
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+export LC_ALL=C.UTF-8
 export TERM="xterm-256color"
-export LANG=C.UTF-8
 POWERLEVEL9K_MODE='awesome-fontconfig'
 ZSH_THEME="powerlevel9k/powerlevel9k"
 
@@ -59,6 +59,7 @@ source $ZSH/oh-my-zsh.sh
 
 
 # User configuration
+export LC_ALL=C.UTF-8
 export EDITOR='vim'
 export LIBGL_ALWAYS_INDIRECT=1
 
