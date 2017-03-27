@@ -53,7 +53,7 @@ RUN rm /root/.amberrc -f
 ## spacemacs
 RUN apt-get install -y emacs25
 USER $user
-RUN git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
 RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.spacemacs" -O ~/.spacemacs
 USER root
 
