@@ -37,7 +37,7 @@ RUN chsh $user -s /bin/zsh
 RUN apt-get install -y bzip2 ca-certificates \
     libglib2.0-0 libxext6 libsm6 libxrender1 \
     git mercurial subversion
-RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/zsh/zprofile && \
+RUN echo 'export PATH=/opt/conda/bin:$PATH' >> /etc/zsh/zprofile && \
     wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.3.11-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh
@@ -65,7 +65,7 @@ RUN echo 'root:$pswd' | chpasswd
 RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 ENV NOTVISIBLE "in users profile"
-RUN echo "export VISIBLE=now" >> /etc/profile
+RUN echo "export VISIBLE=now" >> /etc/zsh/zprofile
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
 

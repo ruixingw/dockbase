@@ -59,19 +59,19 @@ source $ZSH/oh-my-zsh.sh
 
 
 # User configuration
-export LC_ALL=C.UTF-8
-export EDITOR='vim'
 export LIBGL_ALWAYS_INDIRECT=1
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
+export LC_ALL=C.UTF-8
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
 #   export EDITOR='mvim'
 # fi
+export EDITOR='vim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
