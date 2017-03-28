@@ -15,7 +15,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EAAFC9CD
 RUN apt-get update --fix-missing 
 
 ## Essential
-RUN apt-get install -y build-essential gfortran vim git wget sudo
+RUN apt-get install -y build-essential gfortran vim git wget sudo bzip2 ca-certificates
 
 # Add user
 RUN useradd -m $user
@@ -34,14 +34,12 @@ USER root
 RUN chsh $user -s /bin/zsh
 
 ## Miniconda 3
-RUN apt-get install -y bzip2 ca-certificates \
-    libglib2.0-0 libxext6 libsm6 libxrender1 \
-    git mercurial subversion
+RUN apt-get install -y mercurial subversion \
+    libglib2.0-0 libxext6 libsm6 libxrender1
 RUN echo 'export PATH=/opt/conda/bin:$PATH' >> /etc/zsh/zprofile && \
     wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.3.11-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh
-RUN apt-get clean
 ENV PATH /opt/conda/bin:$PATH
 
 ## ambertools conda-build
@@ -61,7 +59,7 @@ USER root
 ## Source Code Pro
 RUN [ -d /usr/share/fonts/opentype ] || mkdir -p /usr/share/fonts/opentype
 RUN wget --quiet https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.tar.gz
-RUN tar xf 1.050R-it.tar.gz /usr/share/fonts/opentype/
+RUN tar xf 1.050R-it.tar.gz -C /usr/share/fonts/opentype/
 RUN fc-cache -f 
 
 ## SSHD
