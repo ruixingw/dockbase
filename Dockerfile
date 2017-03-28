@@ -4,8 +4,9 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ARG user=ruixingw
 ARG pswd=chinaman
 ARG ubuntuversion=xenial
+WORKDIR /tmp
 
-# Add source 
+# Add source & update 
 ## emacs25 from https://launchpad.net/~kelleyk/+archive/ubuntu/emacs
 RUN echo "deb http://ppa.launchpad.net/kelleyk/emacs/ubuntu $ubuntuversion main" >> /etc/apt/sources.list
 RUN echo "deb-src http://ppa.launchpad.net/kelleyk/emacs/ubuntu $ubuntuversion main" >> /etc/apt/sources.list
@@ -14,10 +15,9 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EAAFC9CD
 RUN apt-get update --fix-missing 
 
 ## Essential
-RUN apt-get install -y build-essential gfortran vim git wget
+RUN apt-get install -y build-essential gfortran vim git wget sudo
 
 # Add user
-RUN apt-get install -y sudo
 RUN useradd -m $user
 RUN echo "$user:$pswd" | chpasswd 
 RUN adduser $user sudo
@@ -47,18 +47,24 @@ ENV PATH /opt/conda/bin:$PATH
 ## ambertools conda-build
 ADD .amberrc /root
 WORKDIR /root
-RUN conda install -v -y -c ambermd ambertools=16.21.1
+RUN conda install -q -y -c ambermd ambertools=16.21.1
 RUN rm /root/.amberrc -f
-WORKDIR /
+WORKDIR /tmp
 
 ## spacemacs
 RUN apt-get install -y emacs25 dbus-x11
 USER $user
-RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
+RUN git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.spacemacs" -O ~/.spacemacs
 USER root
 
-# SSHD
+## Source Code Pro
+RUN [ -d /usr/share/fonts/opentype ] || mkdir /usr/share/fonts/opentype
+RUN wget --quiet https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.tar.gz
+RUN tar xf 1.050R-it.tar.gz /usr/share/fonts/opentype/
+RUN fc-cache -f 
+
+## SSHD
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
 RUN echo 'root:$pswd' | chpasswd
@@ -67,6 +73,11 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/zsh/zprofile
 EXPOSE 22
+
+# Clean
+RUN apt-get clean
+
+# CMD sshd 
 CMD ["/usr/sbin/sshd", "-D"]
 
 
