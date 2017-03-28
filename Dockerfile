@@ -59,7 +59,7 @@ RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.spacemacs" -
 USER root
 
 ## Source Code Pro
-RUN [ -d /usr/share/fonts/opentype ] || mkdir /usr/share/fonts/opentype
+RUN [ -d /usr/share/fonts/opentype ] || mkdir -p /usr/share/fonts/opentype
 RUN wget --quiet https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.tar.gz
 RUN tar xf 1.050R-it.tar.gz /usr/share/fonts/opentype/
 RUN fc-cache -f 
