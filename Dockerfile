@@ -50,10 +50,11 @@ RUN rm /root/.amberrc -f
 WORKDIR /tmp
 
 ## Source Code Pro
-RUN [ -d /usr/share/fonts/opentype ] || mkdir -p /usr/share/fonts/opentype
+RUN apt-get install -y fontconfig
+RUN mkdir -p /usr/share/fonts/opentype
 RUN wget --quiet https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.tar.gz
 RUN tar xf 1.050R-it.tar.gz -C /usr/share/fonts/opentype/
-RUN fc-cache -f 
+RUN fc-cache -f
 
 ## spacemacs
 RUN apt-get install -y emacs25 dbus-x11
