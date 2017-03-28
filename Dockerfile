@@ -49,18 +49,19 @@ RUN conda install -q -y -c ambermd ambertools=16.21.1
 RUN rm /root/.amberrc -f
 WORKDIR /tmp
 
-## spacemacs
-RUN apt-get install -y emacs25 dbus-x11
-USER $user
-RUN git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
-RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.spacemacs" -O ~/.spacemacs
-USER root
-
 ## Source Code Pro
 RUN [ -d /usr/share/fonts/opentype ] || mkdir -p /usr/share/fonts/opentype
 RUN wget --quiet https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.tar.gz
 RUN tar xf 1.050R-it.tar.gz -C /usr/share/fonts/opentype/
 RUN fc-cache -f 
+
+## spacemacs
+RUN apt-get install -y emacs25 dbus-x11
+USER $user
+RUN git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.spacemacs" -O ~/.spacemacs
+RUN emacs --daemon
+USER root
 
 ## SSHD
 RUN apt-get install -y openssh-server
