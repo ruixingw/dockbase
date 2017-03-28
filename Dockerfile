@@ -76,6 +76,7 @@ EXPOSE 22
 
 # Clean
 RUN apt-get clean
+RUN rm /tmp/* -rf
 
 # CMD sshd 
 CMD ["/usr/sbin/sshd", "-D"]
