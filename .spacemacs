@@ -36,11 +36,10 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     helm
+     ivy
      python
      git
-     ;; auto-completion
-     ;; better-defaults
+     better-defaults
      ;;emacs-lisp
      ;; git
      ;; markdown
@@ -137,7 +136,7 @@ values."
    dotspacemacs-default-font '("Source Code Pro"
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 2.0)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).

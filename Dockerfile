@@ -27,18 +27,20 @@ RUN adduser $user sudo
 RUN apt-get install -y zsh autojump
 USER $user
 RUN git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.zshrc" -O ~/.zshrc
-RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.zshenv" -O ~/.zshenv
+RUN echo "export ZSH=/home/$user/.oh-my-zsh" > ~/.zshrc
+RUN wget -q -O - "https://raw.githubusercontent.com/ruixingw/myconf/master/.zshrc" >> ~/.zshrc
+RUN wget -q "https://raw.githubusercontent.com/ruixingw/myconf/master/.zshenv" -O ~/.zshenv
 RUN git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 USER root
+RUN cp /home/$user/.zshrc /root
 RUN chsh $user -s /bin/zsh
-RUN chsh $root -s /bin/zsh
+RUN chsh root -s /bin/zsh
 
 ## Miniconda 3
 RUN apt-get install -y mercurial subversion \
     libglib2.0-0 libxext6 libsm6 libxrender1
 RUN echo 'export PATH=/opt/conda/bin:$PATH' >> /etc/zsh/zshenv && \
-    wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.3.11-Linux-x86_64.sh -O ~/miniconda.sh && \
+    wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh
 ENV PATH /opt/conda/bin:$PATH
@@ -57,18 +59,20 @@ RUN wget --quiet https://github.com/adobe-fonts/source-code-pro/archive/2.030R-r
 RUN tar xf 1.050R-it.tar.gz -C /usr/share/fonts/opentype/
 RUN fc-cache -f
 
-## spacemacs
+## spacemacs & python layer
 RUN apt-get install -y emacs25 dbus-x11
 USER $user
 RUN git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.spacemacs" -O ~/.spacemacs
 RUN emacs --daemon
 USER root
+RUN pip install autoflake flake8
+RUN pip intsall --upgrade "jedi>=0.9.0" "json-rpc>=1.8.1" "service_factory>=0.1.5"
 
 ## SSHD
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
-RUN echo 'root:$pswd' | chpasswd
+RUN echo "root:$pswd" | chpasswd
 RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 ENV NOTVISIBLE "in users profile"
