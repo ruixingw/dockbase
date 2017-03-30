@@ -67,7 +67,7 @@ RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.spacemacs" -
 RUN emacs --daemon
 USER root
 RUN pip install autoflake flake8
-RUN pip intsall --upgrade "jedi>=0.9.0" "json-rpc>=1.8.1" "service_factory>=0.1.5"
+RUN pip install --upgrade "jedi>=0.9.0" "json-rpc>=1.8.1" "service_factory>=0.1.5"
 
 ## SSHD
 RUN apt-get install -y openssh-server
