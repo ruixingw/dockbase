@@ -32,11 +32,12 @@ RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.zshenv" -O ~
 RUN git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 USER root
 RUN chsh $user -s /bin/zsh
+RUN chsh $root -s /bin/zsh
 
 ## Miniconda 3
 RUN apt-get install -y mercurial subversion \
     libglib2.0-0 libxext6 libsm6 libxrender1
-RUN echo 'export PATH=/opt/conda/bin:$PATH' >> /etc/zsh/zprofile && \
+RUN echo 'export PATH=/opt/conda/bin:$PATH' >> /etc/zsh/zshenv && \
     wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.3.11-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh
