@@ -15,7 +15,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EAAFC9CD
 RUN apt-get update --fix-missing 
 
 ## Essential
-RUN apt-get install -y build-essential gfortran vim git wget sudo bzip2 unzip ca-certificates
+RUN apt-get install -y build-essential pkg-config man gfortran vim git wget sudo bzip2 unzip ca-certificates
 
 # Add user
 RUN useradd -m $user
