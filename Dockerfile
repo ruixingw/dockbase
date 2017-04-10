@@ -24,8 +24,9 @@ RUN apt-get install -y zsh autojump
 USER $user
 RUN git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 RUN echo "export ZSH=/home/$user/.oh-my-zsh" > ~/.zshrc
-RUN wget -q -O - "https://raw.githubusercontent.com/ruixingw/myconf/master/.zshrc" >> ~/.zshrc
-RUN wget -q "https://raw.githubusercontent.com/ruixingw/myconf/master/.zshenv" -O ~/.zshenv
+ADD .zshrc zshrc
+RUN cat zshrc >> ~/.zshrc
+ADD .zshenv ~/.zshenv
 RUN git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 USER root
 RUN cp /home/$user/.zshrc /root
