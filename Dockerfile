@@ -6,20 +6,16 @@ ARG pswd=chinaman
 ARG ubuntuversion=xenial
 WORKDIR /tmp
 
-# Add source & update 
-## emacs25 from https://launchpad.net/~kelleyk/+archive/ubuntu/emacs
-RUN echo "deb http://ppa.launchpad.net/kelleyk/emacs/ubuntu $ubuntuversion main" >> /etc/apt/sources.list
-RUN echo "deb-src http://ppa.launchpad.net/kelleyk/emacs/ubuntu $ubuntuversion main" >> /etc/apt/sources.list
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EAAFC9CD
-## UPDATE
+# UPDATE
 RUN apt-get update --fix-missing 
 
 ## Essential
-RUN apt-get install -y build-essential pkg-config man gfortran vim git wget sudo bzip2 unzip ca-certificates
+RUN apt-get install -y sudo build-essential pkg-config man gfortran vim git wget bzip2 unzip ca-certificates
 
 # Add user
 RUN useradd -m $user
 RUN echo "$user:$pswd" | chpasswd 
+RUN echo "root:$pswd" | chpasswd
 RUN adduser $user sudo
 
 # Install apps
@@ -45,34 +41,9 @@ RUN echo 'export PATH=/opt/conda/bin:$PATH' >> /etc/zsh/zshenv && \
     rm ~/miniconda.sh
 ENV PATH /opt/conda/bin:$PATH
 
-## ambertools conda-build
-ADD .amberrc /root
-WORKDIR /root
-RUN conda install -q -y -c ambermd ambertools=16.21.1
-RUN rm /root/.amberrc -f
-WORKDIR /tmp
-
-## Source Code Pro
-RUN apt-get install -y fontconfig
-RUN mkdir -p /usr/share/fonts/opentype
-RUN wget --quiet https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.tar.gz
-RUN tar xf 1.050R-it.tar.gz -C /usr/share/fonts/opentype/
-RUN fc-cache -f
-
-## spacemacs & python layer
-RUN apt-get install -y emacs25 dbus-x11
-USER $user
-RUN git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
-RUN wget "https://raw.githubusercontent.com/ruixingw/myconf/master/.spacemacs" -O ~/.spacemacs
-RUN emacs --daemon
-USER root
-RUN pip install autoflake flake8
-RUN pip install --upgrade "jedi>=0.9.0" "json-rpc>=1.8.1" "service_factory>=0.1.5"
-
 ## SSHD
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
-RUN echo "root:$pswd" | chpasswd
 RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 ENV NOTVISIBLE "in users profile"
