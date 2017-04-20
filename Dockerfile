@@ -26,7 +26,8 @@ RUN git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 RUN echo "export ZSH=/home/$user/.oh-my-zsh" > ~/.zshrc
 ADD .zshrc zshrc
 RUN cat zshrc >> ~/.zshrc
-ADD .zshenv ~/.zshenv
+ADD .zshenv zshenv
+RUN cat zshenv >> ~/.zshenv
 RUN git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 USER root
 RUN cp /home/$user/.zshrc /root
