@@ -14,7 +14,7 @@ RUN apt-get install -y zsh autojump
 RUN git clone https://github.com/robbyrussell/oh-my-zsh.git /usr/share/oh-my-zsh
 RUN git clone https://github.com/bhilburn/powerlevel9k.git /usr/share/oh-my-zsh/custom/themes/powerlevel9k
 RUN echo 'export ZSH=/usr/share/oh-my-zsh' > /usr/share/zshrc
-ADD .zshrc zshrc
+ADD zshrc zshrc
 RUN cat zshrc >> /usr/share/zshrc
 RUN chsh root -s /bin/zsh
 
