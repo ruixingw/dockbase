@@ -16,7 +16,6 @@ RUN git clone https://github.com/bhilburn/powerlevel9k.git /usr/share/oh-my-zsh/
 RUN echo 'export ZSH=/usr/share/oh-my-zsh' > /usr/share/zshrc
 ADD .zshrc zshrc
 RUN cat zshrc >> /usr/share/zshrc
-ADD .zshenv /usr/share/zshenv
 RUN chsh root -s /bin/zsh
 
 ## Miniconda 3
