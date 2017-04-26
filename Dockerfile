@@ -1,10 +1,11 @@
 FROM ubuntu:16.04
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+RUN echo "root:chinaman" | chpasswd
 WORKDIR /tmp
 
 # UPDATE
-RUN apt-get update --fix-missing 
+RUN apt-get update 
 
 ## Essential
 RUN apt-get install -y sudo build-essential pkg-config man gfortran vim git wget bzip2 unzip ca-certificates
@@ -13,18 +14,14 @@ RUN apt-get install -y sudo build-essential pkg-config man gfortran vim git wget
 RUN apt-get install -y zsh autojump
 RUN git clone https://github.com/robbyrussell/oh-my-zsh.git /usr/share/oh-my-zsh
 RUN git clone https://github.com/bhilburn/powerlevel9k.git /usr/share/oh-my-zsh/custom/themes/powerlevel9k
-RUN echo 'export ZSH=/usr/share/oh-my-zsh' > /usr/share/zshrc
-ADD zshrc zshrc
-RUN cat zshrc >> /usr/share/zshrc
+ADD zshrc /usr/share/zshrc
 RUN cp /usr/share/zshrc /root/.zshrc
 RUN chsh root -s /bin/zsh
 
 ## Miniconda 3
-RUN echo 'export PATH=/opt/conda/bin:$PATH' >> /etc/zsh/zshenv && \
-    wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
-    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
-    rm ~/miniconda.sh
-ENV PATH /opt/conda/bin:$PATH
+RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh 
+RUN /bin/bash miniconda.sh -b -p /opt/conda 
+RUN echo 'export PATH=/opt/conda/bin:$PATH' >> /etc/zsh/zshenv 
 
 ## SSHD
 RUN apt-get install -y openssh-server

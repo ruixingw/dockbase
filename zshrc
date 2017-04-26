@@ -5,6 +5,7 @@
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+export ZSH=/usr/share/oh-my-zsh
 export LC_ALL=C.UTF-8
 ZSH_THEME="powerlevel9k/powerlevel9k"
 
@@ -56,6 +57,7 @@ source $ZSH/oh-my-zsh.sh
 
 
 # User configuration
+# For Xming X11 forwarding
 export LIBGL_ALWAYS_INDIRECT=1
 
 # export MANPATH="/usr/local/man:$MANPATH"
