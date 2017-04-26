@@ -22,6 +22,8 @@ RUN chsh root -s /bin/zsh
 RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh 
 RUN /bin/bash miniconda.sh -b -p /opt/conda 
 RUN echo 'export PATH=/opt/conda/bin:$PATH' >> /etc/zsh/zshenv 
+ENV PATH /opt/conda/bin:$PATH
+
 
 ## SSHD
 RUN apt-get install -y openssh-server
