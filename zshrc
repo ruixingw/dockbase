@@ -7,7 +7,7 @@
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 export ZSH=/usr/share/oh-my-zsh
 export LC_ALL=C.UTF-8
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="ys"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
