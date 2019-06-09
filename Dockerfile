@@ -5,13 +5,13 @@ RUN echo "root:chinaman" | chpasswd
 WORKDIR /tmp
 
 # UPDATE
-RUN apt update 
+RUN apt-get update 
 
 ## Essentials
-RUN apt install -y sudo build-essential pkg-config man gfortran vim git wget bzip2 unzip ca-certificates
+RUN apt-get install -y sudo build-essential pkg-config man gfortran vim git wget bzip2 unzip ca-certificates
 
 ## Oh-my-zsh & autojump
-RUN apt install -y zsh autojump
+RUN apt-get install -y zsh autojump
 RUN git clone https://github.com/robbyrussell/oh-my-zsh.git /root/.oh-my-zsh
 ADD zshrc /root/.zshrc
 RUN chsh root -s /bin/zsh
@@ -24,7 +24,7 @@ ENV PATH /opt/conda/bin:$PATH
 
 
 ## SSHD
-RUN apt install -y openssh-server
+RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
 RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
@@ -33,7 +33,7 @@ RUN echo "export VISIBLE=now" >> /etc/zsh/zprofile
 EXPOSE 22
 
 # Clean
-RUN apt clean
+RUN apt-get clean
 RUN rm /tmp/* -rf
 
 # CMD sshd 
