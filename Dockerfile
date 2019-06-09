@@ -9,7 +9,7 @@ RUN apt-get update
 RUN apt-get upgrade -y
 
 ## Essentials
-RUN apt-get install -y sudo build-essential pkg-config man gfortran vim git wget bzip2 unzip ca-certificates
+RUN apt-get install -y sudo build-essential pkg-config man gfortran vim git wget bzip2 unzip ca-certificates apt-utils
 
 ## Oh-my-zsh & autojump
 RUN apt-get install -y zsh autojump
@@ -18,24 +18,23 @@ ADD zshrc /root/.zshrc
 RUN chsh root -s /bin/zsh
 
 ## Miniconda 3
-RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh 
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
 RUN /bin/bash miniconda.sh -b -p /opt/conda 
-RUN echo 'export PATH=/opt/conda/bin:$PATH' >> /root/.zshenv 
-ENV PATH /opt/conda/bin:$PATH
-
+RUN eval "$(/opt/conda/bin/conda shell.zsh hook)"
+RUN conda init zsh
 
 ## SSHD
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
-RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-ENV NOTVISIBLE "in users profile"
-RUN echo "export VISIBLE=now" >> /etc/zsh/zprofile
+RUN mkdir /root/.ssh
+RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+RUN echo "export LANG=C.UTF-8 LC_ALL=C.UTF-8" >> /etc/zsh/zprofile
 EXPOSE 22
 
-# Clean
-RUN apt-get clean
-RUN rm /tmp/* -rf
+
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # CMD sshd 
 CMD ["/usr/sbin/sshd", "-D"]
