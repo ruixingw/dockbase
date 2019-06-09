@@ -6,6 +6,7 @@ WORKDIR /tmp
 
 # UPDATE
 RUN apt-get update 
+RUN apt-get upgrade -y
 
 ## Essentials
 RUN apt-get install -y sudo build-essential pkg-config man gfortran vim git wget bzip2 unzip ca-certificates
