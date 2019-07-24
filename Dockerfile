@@ -9,7 +9,7 @@ RUN apt-get update
 RUN apt-get upgrade -y
 
 ## Essentials
-RUN apt-get install -y sudo build-essential pkg-config man gfortran vim git wget bzip2 unzip ca-certificates apt-utils
+RUN apt-get install -y sudo build-essential pkg-config man gfortran vim git wget bzip2 unzip ca-certificates apt-utils cmake
 
 ## Oh-my-zsh & autojump
 RUN apt-get install -y zsh autojump
