@@ -1,0 +1,12 @@
+# From the server we can download files to the local through the ssh tunnel. 
+# Usage: dz filename [path]
+# [path] is optional with a download path predefined in "else" section.
+# This is excuted on the server side.
+function dz () {
+  if [ $2 ]; then
+       scp -P 2233 $1 ruixingw@localhost:/home/ruixingw/$2
+  else
+       scp -P 2233 $1 ruixingw@localhost:/home/ruixingw/Downloads/;
+  fi
+}
+
