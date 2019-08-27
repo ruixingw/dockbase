@@ -9,7 +9,7 @@ RUN apt-get update
 RUN apt-get upgrade -y
 
 ## Essentials
-RUN apt-get install -y sudo build-essential pkg-config man gfortran vim git wget bzip2 unzip ca-certificates apt-utils cmake
+RUN apt-get install -y sudo build-essential pkg-config man gfortran vim git wget bzip2 unzip ca-certificates apt-utils cmake curl
 
 ## Oh-my-zsh & autojump
 RUN apt-get install -y zsh autojump
@@ -19,8 +19,8 @@ ADD alias /root/.alias
 RUN chsh root -s /bin/zsh
 
 ## Miniconda 3
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
-RUN /bin/bash miniconda.sh -b -p /opt/conda 
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
+RUN /bin/bash /tmp/miniconda.sh -b -p /opt/conda 
 RUN eval "$(/opt/conda/bin/conda shell.zsh hook)"
 RUN conda init zsh
 
